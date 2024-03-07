@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const upload = require('../middlewares/upload')
 
 const {
     getAllProjects,
@@ -9,7 +10,7 @@ const {
     deleteproject
 } = require('../controllers/projects')
 
-router.route('/').get(getAllProjects).post(createNewproject)
-router.route('/:id').get(getSingleproject).patch(updateProject).delete(deleteproject)
+router.route('/').get(getAllProjects).post(upload.single('image'),createNewproject)
+router.route('/:id').get(getSingleproject).patch(upload.single('image'),updateProject).delete(deleteproject)
 
 module.exports = router

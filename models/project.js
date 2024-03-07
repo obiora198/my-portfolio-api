@@ -18,9 +18,9 @@ const ProjectSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    displayImage: {
+    image: {
         type: String,
-        default: 'Display image'
+        required: true
     }
 })
 

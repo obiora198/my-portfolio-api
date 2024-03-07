@@ -16,7 +16,7 @@ app.use('/api/v1/projects',projectsRouter)
 app.use(errorhandler)
 app.use(notFound)
 
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 3000
 
 const start = async () => {
     try {
