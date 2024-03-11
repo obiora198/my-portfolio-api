@@ -1,6 +1,7 @@
 const Project = require("../models/project");
-const deleteImage = require("../middlewares/delete-image");
 const NotFoundError = require('../errors/not-found')
+const BadRequestError = require('../errors/bad-request')
+const cloudinaryUpload = require('../config/cloudinary')
 
 const getAllProjects = async (req, res) => {
   const projects = await Project.find({});
@@ -17,7 +18,10 @@ const getSingleproject = async (req, res) => {
 };
 
 const createNewproject = async (req, res) => {
-  const image = req.file.path;
+  const image = cloudinaryUpload(req.file.path)
+  if(!image) {
+    throw new BadRequestError('no image provided')
+  }
   req.body.image = image;
   const newProject = await Project.create(req.body);
   res.status(201).json({ newProject });
@@ -25,7 +29,7 @@ const createNewproject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   const { id: projectID } = req.params;
-  const image = req.file;
+  const image = cloudinaryUpload(req.file.path)
   if (image) {
     req.body.image = image.path;
   }
@@ -35,9 +39,7 @@ const updateProject = async (req, res) => {
   if (!project) {
     throw new NotFoundError(`project with id: ${projectID} doens't exist`)
   }
-  if (image) {
-    deleteImage(project.image);
-  }
+
   res.status(200).json({ project });
 };
 
@@ -47,7 +49,6 @@ const deleteproject = async (req, res) => {
   if (!project) {
     throw new NotFoundError(`project with id: ${projectID} doens't exist`)
   }
-  deleteImage(project.image);
   res.status(200).json({ project });
 };
 
