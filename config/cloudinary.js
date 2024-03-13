@@ -19,7 +19,7 @@ const uploadImages = async (images) => {
   };
 
   // Upload the image
-  let count = 1
+  let count = 1;
   let uploadPromises = images.map(async (image, i) => {
     try {
       const response = await cloudinary.uploader.upload(image.path, options);
@@ -41,12 +41,13 @@ const uploadImages = async (images) => {
 };
 
 const deleteImages = (images) => {
-  images.forEach(async (image) => {
-    await cloudinary.uploader
-      .destroy(image.imageId)
-      .then((result) => console.log(result));
-  });
-  
+  try {
+    images.forEach(async (image) => {
+      await cloudinary.uploader.destroy(image.imageId);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 module.exports = { uploadImages, deleteImages };

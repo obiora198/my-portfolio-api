@@ -62,7 +62,7 @@ const deleteproject = async (req, res) => {
   if (!project) {
     throw new NotFoundError(`project with id: ${projectID} doens't exist`);
   }
-  const response = a
+  await deleteImages(project.images)
   res.status(200).json({ project });
 };
 
