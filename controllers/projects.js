@@ -1,11 +1,11 @@
 const Project = require("../models/project");
 const NotFoundError = require("../errors/not-found");
 const BadRequestError = require("../errors/bad-request");
-const {uploadImages,deleteImages} = require("../config/cloudinary");
+const { uploadImages, deleteImages } = require("../config/cloudinary");
 
 const getAllProjects = async (req, res) => {
   const projects = await Project.find({});
-  res.status(200).json({ nbHits: projects.length, data: projects});
+  res.status(200).json({ nbHits: projects.length, data: projects });
 };
 
 const getSingleproject = async (req, res) => {
@@ -18,8 +18,8 @@ const getSingleproject = async (req, res) => {
 };
 
 const createNewproject = async (req, res) => {
-  let images = req.files
-  images  = await uploadImages(images);
+  let images = req.files;
+  images = await uploadImages(images);
   // res.json(images);
   if (!images || images.length < 1) {
     throw new BadRequestError("no image provided");
@@ -31,20 +31,15 @@ const createNewproject = async (req, res) => {
 };
 
 const createproject = async (req, res) => {
-  const images = req.files
-  images.forEach((image,i) => {
-    console.log(image.path,i);
-  })
+  const images = req.files;
+  images.forEach((image, i) => {
+    console.log(image.path, i);
+  });
   res.json(req.files);
 };
 
 const updateProject = async (req, res) => {
   const { id: projectID } = req.params;
-  const image = await cloudinaryUpload(req.file.path);
-  if (image) {
-    req.body.imageUrl = image.imageUrl;
-    req.body.imageId = image.imageId;
-  }
   const project = await Project.findOneAndUpdate({ _id: projectID }, req.body, {
     runValidators: true,
     new: true,
@@ -62,7 +57,7 @@ const deleteproject = async (req, res) => {
   if (!project) {
     throw new NotFoundError(`project with id: ${projectID} doens't exist`);
   }
-  await deleteImages(project.images)
+  deleteImages(project.images);
   res.status(200).json({ project });
 };
 
@@ -72,5 +67,5 @@ module.exports = {
   createNewproject,
   updateProject,
   deleteproject,
-  createproject
+  createproject,
 };
