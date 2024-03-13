@@ -3,15 +3,12 @@ const fs = require("fs");
 
 cloudinary.config({
   secure: true,
-});
-          
-cloudinary.config({ 
-  cloud_name: 'dgd3z5vbo', 
-  api_key: '567818829335128', 
-  api_secret: 'LpX1AjRZid6kMqjfqzMZcdxUdvw' 
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
 });
 
-const uploadImage = async (imagePath) => {
+const uploadImages = async (images) => {
   // Use the uploaded file's name as the asset's public ID and
   // allow overwriting the asset with new versions
   const options = {
@@ -21,17 +18,35 @@ const uploadImage = async (imagePath) => {
     folder: "PORTFOLIO-PROJECT-IMAGES",
   };
 
-  try {
-    // Upload the image
-    const result = await cloudinary.uploader.upload(imagePath, options);
-    console.log(result);
-    if (result) {
-      fs.unlink(imagePath);
+  // Upload the image
+  let count = 1
+  let uploadPromises = images.map(async (image, i) => {
+    try {
+      const response = await cloudinary.uploader.upload(image.path, options);
+      console.log(`>>> uploading ${(count++ / images.length) * 100}%`);
+      fs.unlink(image.path, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+      return { imageUrl: response.url, imageId: response.public_id };
+    } catch (err) {
+      console.error(err);
+      return null; // or handle the error as needed
     }
-    return result.public_id;
-  } catch (error) {
-    console.error(error);
-  }
+  });
+
+  let result = await Promise.all(uploadPromises);
+  return result;
 };
 
-module.exports = uploadImage;
+const deleteImages = (images) => {
+  images.forEach(async (image) => {
+    await cloudinary.uploader
+      .destroy(image.imageId)
+      .then((result) => console.log(result));
+  });
+  
+};
+
+module.exports = { uploadImages, deleteImages };

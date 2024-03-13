@@ -7,10 +7,12 @@ const {
     getSingleproject,
     createNewproject,
     updateProject,
-    deleteproject
+    deleteproject,
+    createproject
 } = require('../controllers/projects')
 
-router.route('/').get(getAllProjects).post(upload.single('image'),createNewproject)
+router.route('/create/').post(upload.array('images',10),createproject)
+router.route('/').get(getAllProjects).post(upload.array('images',10),createNewproject)
 router.route('/:id').get(getSingleproject).patch(upload.single('image'),updateProject).delete(deleteproject)
 
 module.exports = router
