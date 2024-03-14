@@ -1,19 +1,26 @@
-const express = require('express')
-const router = express.Router()
-const upload = require('../middlewares/upload')
-const updateImages = require('../middlewares/update-image')
+const express = require("express");
+const router = express.Router();
+const upload = require("../middlewares/upload");
+const updateImages = require("../middlewares/update-image");
 
 const {
-    getAllProjects,
-    getSingleproject,
-    createNewproject,
-    updateProject,
-    deleteproject,
-    createproject
-} = require('../controllers/projects')
+  getAllProjects,
+  getSingleproject,
+  createNewproject,
+  updateProject,
+  deleteproject,
+  createproject,
+} = require("../controllers/projects");
 
-router.route('/create/').post(upload.array('images',10),createproject)
-router.route('/').get(getAllProjects).post(upload.array('images',10),createNewproject)
-router.route('/:id').get(getSingleproject).patch(upload.single('image'),updateImages,updateProject).delete(deleteproject)
+router.route("/create/").post(upload.array("images", 10), createproject);
+router
+  .route("/")
+  .get(getAllProjects)
+  .post(upload.array("images", 10), createNewproject);
+router
+  .route("/:id")
+  .get(getSingleproject)
+  .patch(upload.array("images", 10), updateImages, updateProject)
+  .delete(deleteproject);
 
-module.exports = router
+module.exports = router;

@@ -4,26 +4,26 @@ const { uploadImages, deleteImages } = require("../config/cloudinary");
 const updateImages = async (req, res, next) => {
   const { id: projectID } = req.params;
   let { imageId: imageIdToRemove } = req.query;
-  imageIdToRemove = imageIdToRemove
-  .split(",")
-  .map((item) => ({ imageId: item }));
+
   const project = await Project.findOne({ _id: projectID });
   req.body.images = project.images;
   let newImages = req.files;
-  console.log(newImages) 
   try {
     if (newImages) {
       newImages = await uploadImages(newImages);
-      req.body.images = [...newImages];
-    }
-    if (imageIdToRemove) { 
-      deleteImages(imageIdToRemove);
-      imageIdToRemove = imageIdToRemove.map(id => id.imageId)
-      req.body.images = req.body.images.map((item) => {
-        if ( !imageIdToRemove.includes(item.imageId)) {
-          return item;
-        }
+      newImages.forEach(image => {
+        req.body.images.push(image);
       });
+    }
+    if (imageIdToRemove) {
+      imageIdToRemove = imageIdToRemove
+        .split(",")
+        .map((item) => ({ imageId: item }));
+      deleteImages(imageIdToRemove);
+      imageIdToRemove = imageIdToRemove.map((id) => id.imageId);
+      req.body.images = req.body.images.filter(
+        (item) => !imageIdToRemove.includes(item.imageId)
+      );
     }
   } catch (error) {
     console.log(error);
