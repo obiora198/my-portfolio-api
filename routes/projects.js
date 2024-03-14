@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const upload = require('../middlewares/upload')
-const removeImages = require('../middlewares/remove-image')
+const updateImages = require('../middlewares/update-image')
 
 const {
     getAllProjects,
@@ -14,6 +14,6 @@ const {
 
 router.route('/create/').post(upload.array('images',10),createproject)
 router.route('/').get(getAllProjects).post(upload.array('images',10),createNewproject)
-router.route('/:id').get(getSingleproject).patch(upload.single('image'),removeImages,updateProject).delete(deleteproject)
+router.route('/:id').get(getSingleproject).patch(upload.single('image'),updateImages,updateProject).delete(deleteproject)
 
 module.exports = router

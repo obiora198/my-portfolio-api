@@ -20,7 +20,6 @@ const getSingleproject = async (req, res) => {
 const createNewproject = async (req, res) => {
   let images = req.files;
   images = await uploadImages(images);
-  // res.json(images);
   if (!images || images.length < 1) {
     throw new BadRequestError("no image provided");
   }
