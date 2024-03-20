@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middlewares/upload");
+const upload = require("../middlewares/upload-to-db");
 const updateImages = require("../middlewares/update-image");
 
 const {
@@ -12,7 +12,7 @@ const {
   createproject,
 } = require("../controllers/projects");
 
-router.route("/create/").post(upload.array("images", 10), createproject);
+router.route("/create").post(upload.single("image"), createproject);
 router
   .route("/")
   .get(getAllProjects)

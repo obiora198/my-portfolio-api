@@ -32,7 +32,7 @@ const createNewproject = async (req, res) => {
 const createproject = async (req, res) => {
   const images = req.files;
   images.forEach((image, i) => {
-    console.log(image.path, i);
+    console.log(image, i);
   });
   res.json(req.files);
 };
