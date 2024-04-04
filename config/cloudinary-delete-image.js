@@ -11,8 +11,8 @@ cloudinary.config({
 const deleteImages = (images) => {
   try {
     images.forEach(async (image) => {
-      if (image != null) {
-        cloudinary.uploader.destroy(image.imageId);
+      if (image && image != null) {
+        cloudinary.uploader.destroy(image);
       }
     });
   } catch (error) {

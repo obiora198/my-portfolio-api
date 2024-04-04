@@ -12,10 +12,7 @@ const {
 } = require("../controllers/projects");
 
 router.route("/testing/").post(createproject);
-router
-  .route("/")
-  .get(getAllProjects)
-  .post(createNewproject);
+router.route("/").get(getAllProjects).post(createNewproject);
 router
   .route("/:id")
   .get(getSingleproject)
