@@ -18,18 +18,13 @@ const ProjectSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    link: {
+        type: String,
+    },
     images: {
         type: [],
         required:true
     },
-    // imageUrl: {
-    //     type: String,
-    //     required: true
-    // },
-    // imageId: {
-    //     type: String,
-    //     required: true
-    // }
 })
 
 module.exports = mongoose.model('Project', ProjectSchema)

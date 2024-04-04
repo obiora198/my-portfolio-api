@@ -1,19 +1,20 @@
 const Project = require("../models/project");
-const { uploadImages, deleteImages } = require("../config/cloudinary");
+const {
+  deleteImages,
+} = require("../config/cloudinary-delete-image");
 
 const updateImages = async (req, res, next) => {
   const { id: projectID } = req.params;
   let { imageId: imageIdToRemove } = req.query;
 
-  const project = await Project.findOne({ _id: projectID });
-  req.body.images = project.images;
-  let newImages = req.files;
+  let newImages = req.body.images;
   try {
     if (newImages) {
-      newImages = await uploadImages(newImages);
-      newImages.forEach(image => {
-        req.body.images.push(image);
-      });
+      const project = await Project.findOne({ _id: projectID });
+      project.images.map(image => {
+        req.body.images.push(image)
+      })
+
     }
     if (imageIdToRemove) {
       imageIdToRemove = imageIdToRemove

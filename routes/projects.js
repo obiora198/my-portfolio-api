@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middlewares/upload");
 const updateImages = require("../middlewares/update-image");
 
 const {
@@ -16,11 +15,11 @@ router.route("/create/").post(upload.array("images", 10), createproject);
 router
   .route("/")
   .get(getAllProjects)
-  .post(upload.array("images", 10), createNewproject);
+  .post(createNewproject);
 router
   .route("/:id")
   .get(getSingleproject)
-  .patch(upload.array("images", 10), updateImages, updateProject)
+  .patch(updateImages, updateProject)
   .delete(deleteproject);
 
 module.exports = router;
