@@ -1,7 +1,6 @@
 const Project = require("../models/project");
 const NotFoundError = require("../errors/not-found");
-const BadRequestError = require("../errors/bad-request");
-const { uploadImages, deleteImages } = require("../config/cloudinary");
+const deleteImages = require("../config/cloudinary-delete-image");
 
 const getAllProjects = async (req, res) => {
   const projects = await Project.find({});
@@ -18,13 +17,6 @@ const getSingleproject = async (req, res) => {
 };
 
 const createNewproject = async (req, res) => {
-  let images = req.files;
-  images = await uploadImages(images);
-  if (!images || images.length < 1) {
-    throw new BadRequestError("no image provided");
-  }
-
-  req.body.images = images;
   const newProject = await Project.create(req.body);
   res.status(201).json({ newProject });
 };
