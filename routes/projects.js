@@ -11,7 +11,7 @@ const {
   createproject,
 } = require("../controllers/projects");
 
-router.route("/create/").post(upload.array("images", 10), createproject);
+router.route("/testing/").post(createproject);
 router
   .route("/")
   .get(getAllProjects)
