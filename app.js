@@ -6,6 +6,7 @@ const express = require('express')
 const app = express()
 
 const projectsRouter = require('./routes/projects')
+const authRouter = require('./routes/auth')
 const connectDB = require('./db/connect')
 const errorhandler = require('./middlewares/error-handler-middleware')
 const notFound = require('./middlewares/not-found')
@@ -29,6 +30,7 @@ app.use(
 );
 
 app.use('/api/v1/projects',projectsRouter)
+app.use('/api/v1/auth',authRouter)
 
 app.use(errorhandler)
 app.use(notFound)
