@@ -21,12 +21,10 @@ const createNewproject = async (req, res) => {
   res.status(201).json({ newProject });
 };
 
-const createproject = async (req, res) => {
-  const images = req.files;
-  images.forEach((image, i) => {
-    console.log(image.path, i);
-  });
-  res.json(req.files);
+const deleteImage = async (req, res) => {
+  const {images} = req.body;
+  deleteImages(images)
+  res.json('images deleted',images);
 };
 
 const updateProject = async (req, res) => {
@@ -58,5 +56,5 @@ module.exports = {
   createNewproject,
   updateProject,
   deleteproject,
-  createproject,
+  deleteImage,
 };

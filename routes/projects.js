@@ -9,10 +9,10 @@ const {
   createNewproject,
   updateProject,
   deleteproject,
-  createproject,
+  deleteImage,
 } = require("../controllers/projects");
 
-router.route("/testing/").post(createproject);
+router.route("/delete-image").post(deleteImage);
 router.route("/").get(getAllProjects).post(authenticateUser,createNewproject);
 router
   .route("/:id")
