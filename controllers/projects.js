@@ -24,7 +24,7 @@ const createNewproject = async (req, res) => {
 const deleteImage = async (req, res) => {
   const {images} = req.body;
   deleteImages(images)
-  res.json('images deleted',images);
+  res.status(200).json({msg:'images deleted',data:images});
 };
 
 const updateProject = async (req, res) => {
