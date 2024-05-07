@@ -5,7 +5,9 @@ const updateImages = async (req, res, next) => {
   const { id: projectID } = req.params;
   const project = await Project.findOne({ _id: projectID });
   let { imageId: imagesToRemove } = req.query;
-  imagesToRemove = imagesToRemove.split(",");
+  if(imagesToRemove) {
+    const imagesArray = imagesToRemove.split(",");
+  }
 
   let newImages = req.body.images;
   req.body.images = project.images
@@ -15,9 +17,9 @@ const updateImages = async (req, res, next) => {
         req.body.images.push(image);
       });
     }
-    if (imagesToRemove) {
-      deleteImages(imagesToRemove);
-      req.body.images = req.body.images.filter(image => !imagesToRemove.includes(image));
+    if (imagesArray) {
+      deleteImages(imagesArray);
+      req.body.images = req.body.images.filter(image => !imagesArray.includes(image));
     }
   } catch (error) {
     console.log(error);
